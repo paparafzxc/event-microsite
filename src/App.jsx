@@ -7,7 +7,7 @@ const event = {
   child: "Gideon Caleb",
   date: "25 December 2026",
   weekday: "Friday",
-  time: "3:00 PM",
+  time: "Time to be announced",
   venue: "Timberland Highlands Resort",
   location: "Timberland Heights, San Mateo, Rizal",
   address: "Timberland Heights, Barangay Guitnang Bayan II, San Mateo, Rizal 1850, Philippines",
@@ -38,7 +38,7 @@ function Reveal({ children, className = "", delay = 0 }) {
 }
 
 function Countdown() {
-  const target = useMemo(() => new Date("2026-12-25T15:00:00+08:00").getTime(), []);
+  const target = useMemo(() => new Date("2026-12-25T00:00:00+08:00").getTime(), []);
   const [left, setLeft] = useState(Math.max(0, target - Date.now()));
 
   useEffect(() => {
@@ -69,7 +69,7 @@ function CalendarButton() {
     const ics = [
       "BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Gideon Caleb Baptism//EN","BEGIN:VEVENT",
       "UID:gideon-caleb-baptism-2026@event-microsite","DTSTAMP:20260921T000000Z",
-      "DTSTART;TZID=Asia/Manila:20261225T150000","DTEND;TZID=Asia/Manila:20261225T180000",
+      "DTSTART;VALUE=DATE:20261225","DTEND;VALUE=DATE:20261226",
       "SUMMARY:Gideon Caleb's Baptism","LOCATION:Timberland Highlands Resort, San Mateo, Rizal",
       "DESCRIPTION:Celebrating the baptism of Baby Gideon Caleb.","END:VEVENT","END:VCALENDAR"
     ].join("\\r\\n");
@@ -90,6 +90,20 @@ export default function App() {
   const [rsvpOpen, setRsvpOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const { scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    if (!rsvpOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") setRsvpOpen(false);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [rsvpOpen]);
   const smooth = useSpring(scrollYProgress, { stiffness: 80, damping: 30, restDelta: .001 });
   const heroY = useTransform(smooth, [0, .2], ["0%", "18%"]);
   const heroScale = useTransform(smooth, [0, .2], [1.08, 1]);
@@ -104,12 +118,12 @@ export default function App() {
         <div className="hero-vignette" /><div className="hero-grain" />
         <nav className="nav">
           <a className="brand" href="#top">G C</a>
-          <div className={"nav-links " + (menu ? "is-open" : "")}>
+          <div id="site-navigation" className={"nav-links " + (menu ? "is-open" : "")}>
             {[["Welcome","top"],["Story","story"],["Details","details"],["Gallery","gallery"],["RSVP","rsvp"]].map(([label,id]) =>
               <a href={"#" + id} key={id} onClick={() => setMenu(false)}>{label}</a>
             )}
           </div>
-          <button className="menu-button" onClick={() => setMenu(!menu)} aria-label="Toggle menu">
+          <button className="menu-button" onClick={() => setMenu(!menu)} aria-label="Toggle menu" aria-expanded={menu} aria-controls="site-navigation">
             {menu ? <X size={19}/> : <Menu size={19}/>}
           </button>
         </nav>
@@ -159,7 +173,7 @@ export default function App() {
 
         <div className="event-grid">
           <Reveal><article className="event-card featured"><span className="card-index">01</span><CalendarDays size={22} strokeWidth={1.1}/><p className="card-label">The date</p><h3>25<br/>December</h3><p>Friday<br/>Christmas Day · 2026</p></article></Reveal>
-          <Reveal delay={.08}><article className="event-card"><span className="card-index">02</span><Clock3 size={22} strokeWidth={1.1}/><p className="card-label">The ceremony</p><h3>3:00<br/>PM</h3><p>Baptism & thanksgiving<br/>Please arrive 30 minutes early.</p></article></Reveal>
+          <Reveal delay={.08}><article className="event-card"><span className="card-index">02</span><Clock3 size={22} strokeWidth={1.1}/><p className="card-label">The ceremony</p><h3>Time<br/><em>TBA</em></h3><p>Baptism & thanksgiving<br/>Ceremony time to be announced.</p></article></Reveal>
           <Reveal delay={.16}><article className="event-card"><span className="card-index">03</span><MapPin size={22} strokeWidth={1.1}/><p className="card-label">The place</p><h3>Timberland<br/><em>Heights</em></h3><p>{event.location}<br/>Philippines</p><a href="#location">Explore venue <ArrowUpRight size={14}/></a></article></Reveal>
         </div>
 
