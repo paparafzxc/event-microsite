@@ -15,11 +15,11 @@ const event = {
 };
 
 const photos = {
-  hero: "https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=2400&q=90",
-  family: "https://images.unsplash.com/photo-1511895426328-dc8714191300?auto=format&fit=crop&w=1800&q=88",
-  detail: "https://images.unsplash.com/photo-1604917019117-2f6f8b2c2a58?auto=format&fit=crop&w=1400&q=88",
-  nature: "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=1800&q=88",
-  candle: "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&w=1400&q=88"
+  hero: "images/hero.png",
+  family: "images/family.jpg",
+  detail: "images/detail.jpg",
+  nature: "images/nature.jpg",
+  candle: "images/candle.jpg"
 };
 
 const ease = [0.22, 1, 0.36, 1];
