@@ -31,7 +31,7 @@ const reveal = {
 function Reveal({ children, className = "", delay = 0 }) {
   return (
     <motion.div className={className} variants={reveal} initial="hidden" whileInView="show"
-      viewport={{ once: true, amount: 0.16 }} transition={{ delay }}>
+      viewport={{ once: true, amount: 0.16 }} transition={{ delay, duration: 0.85, ease }}>
       {children}
     </motion.div>
   );
@@ -75,8 +75,10 @@ function CalendarButton() {
     ].join("\\r\\n");
     const url = URL.createObjectURL(new Blob([ics], { type: "text/calendar;charset=utf-8" }));
     const link = document.createElement("a");
-    link.href = url; link.download = "gideon-caleb-baptism-2026.ics"; link.click();
-    URL.revokeObjectURL(url);
+    link.href = url; link.download = "gideon-caleb-baptism-2026.ics"; document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
   return <motion.button className="outline-button" onClick={addToCalendar} whileHover={{ y: -2 }} whileTap={{ scale: .98 }}>
     Add to calendar <CalendarDays size={14} />
