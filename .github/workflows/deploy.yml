@@ -29,13 +29,19 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: 22
-          cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --no-audit --no-fund
 
-      - name: Build
+      - name: Build production bundle
         run: npm run build
+
+      - name: Verify production bundle
+        run: |
+          test -f dist/index.html
+          test -s dist/index.html
+          grep -q 'assets/' dist/index.html
+          echo "Production bundle verified."
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
@@ -45,6 +51,6 @@ jobs:
         with:
           path: ./dist
 
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
